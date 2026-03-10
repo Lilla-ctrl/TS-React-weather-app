@@ -1,6 +1,8 @@
 export interface Coordinates {
-  latitude: number;
-  longitude: number;
+  coordinates: {
+    longitude: number;
+    latitude: number;
+  };
 }
 
 export interface WeatherData {
