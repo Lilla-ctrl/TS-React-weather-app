@@ -11,7 +11,7 @@ export interface WeatherData {
   description: string;
   icon: string;
   coordinates: Coordinates;
-  timezone: string;
+  timezone?: string;
 }
 
 export interface ForecastDay {
