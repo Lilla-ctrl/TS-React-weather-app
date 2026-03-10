@@ -29,4 +29,4 @@ export interface ForecastDay {
 
 export type Forecast = ForecastDay[];
 
-export type Unit = "Celsius" | "Fahrenheit";
+export type Unit = "celsius" | "fahrenheit";
