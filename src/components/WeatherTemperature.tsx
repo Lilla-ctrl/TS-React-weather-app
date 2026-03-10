@@ -1,4 +1,4 @@
-import { convertTemperature } from "../utils/convertTemperature";
+import convertTemperature from "../utils/convertTemperature";
 import type { Dispatch, SetStateAction } from "react";
 import type { Unit } from "../types/weather";
 
