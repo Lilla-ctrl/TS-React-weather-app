@@ -1,7 +1,6 @@
 import { convertTemperature } from "../utils/convertTemperature";
 import type { Dispatch, SetStateAction } from "react";
 import type { Unit } from "../types/weather";
-import type { MouseEvent } from "react";
 
 interface WeatherTemperatureProps {
   celsius: number;
@@ -14,11 +13,7 @@ export default function WeatherTemperature({
   unit,
   setUnit,
 }: WeatherTemperatureProps) {
-  function handleUnitChange(
-    event: MouseEvent<HTMLAnchorElement>,
-    newUnit: Unit,
-  ) {
-    event.preventDefault();
+  function handleUnitChange(newUnit: Unit) {
     setUnit(newUnit);
   }
 
@@ -30,21 +25,20 @@ export default function WeatherTemperature({
           : "-"}
       </span>
       <span className="unit">
-        <a
+        <button
+          type="button"
           className={unit === "celsius" ? "" : "clickable"}
-          href="/"
-          onClick={(e) => handleUnitChange(e, "celsius")}
+          onClick={() => handleUnitChange("celsius")}
         >
           °C
-        </a>{" "}
-        |{" "}
-        <a
+        </button>
+        |
+        <button
           className={unit === "fahrenheit" ? "" : "clickable"}
-          href="/"
-          onClick={(e) => handleUnitChange(e, "fahrenheit")}
+          onClick={() => handleUnitChange("fahrenheit")}
         >
           °F
-        </a>
+        </button>
       </span>
     </div>
   );
