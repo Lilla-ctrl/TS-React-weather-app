@@ -1,36 +1,47 @@
-import convertTemperature from "../utils/convertTemperature";
+import { convertTemperature } from "../utils/convertTemperature";
+import type { Dispatch, SetStateAction } from "react";
+import type { Unit } from "../types/weather";
+import type { MouseEvent } from "react";
 
-export default function WeatherTemperature(props) {
-  function showCelsius(event) {
-    event.preventDefault();
-    props.setUnit("celsius");
-  }
+interface WeatherTemperatureProps {
+  celsius: number;
+  unit: Unit;
+  setUnit: Dispatch<SetStateAction<Unit>>;
+}
 
-  function showFahrenheit(event) {
+export default function WeatherTemperature({
+  celsius,
+  unit,
+  setUnit,
+}: WeatherTemperatureProps) {
+  function handleUnitChange(
+    event: MouseEvent<HTMLAnchorElement>,
+    newUnit: Unit,
+  ) {
     event.preventDefault();
-    props.setUnit("fahrenheit");
+    setUnit(newUnit);
   }
 
   return (
     <div className="WeatherTemperature">
       <span className="temperature">
-        {props.celsius !== undefined
-          ? Math.round(convertTemperature(props.celsius, props.unit))
+        {celsius !== undefined
+          ? Math.round(convertTemperature(celsius, unit))
           : "-"}
       </span>
       <span className="unit">
         <a
-          className={props.unit === "celsius" ? "" : "clickable"}
+          className={unit === "celsius" ? "" : "clickable"}
           href="/"
-          onClick={showCelsius}
+          onClick={(e) => handleUnitChange(e, "celsius")}
         >
           °C
         </a>{" "}
         |{" "}
         <a
-          className={props.unit === "fahrenheit" ? "" : "clickable"}
+          className={unit === "fahrenheit" ? "" : "clickable"}
           href="/"
-          onClick={showFahrenheit}
+          onClick={(e) => handleUnitChange(e, "fahrenheit")}
         >
           °F
         </a>
