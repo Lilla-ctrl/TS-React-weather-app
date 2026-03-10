@@ -1,7 +1,8 @@
-export default function convertTemperature(temperature, unit) {
-  if (unit === "celsius") {
-    return temperature;
-  } else {
-    return (temperature * 9) / 5 + 32;
+import type { Unit } from "../types/weather";
+
+export function convertTemperature(celsius: number, unit: Unit): number {
+  if (unit === "fahrenheit") {
+    return (celsius * 9) / 5 + 32;
   }
+  return celsius;
 }
