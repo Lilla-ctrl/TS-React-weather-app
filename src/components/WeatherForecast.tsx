@@ -3,17 +3,17 @@ import axios from "axios";
 import "./WeatherForecast.css";
 import WeatherForecastDay from "./WeatherForecastDay";
 
-export default function WeatherForecast(props) {
+export default function WeatherForecast({data, unit}) {
   const [loaded, setLoaded] = useState(false);
   const [forecast, setForecast] = useState(null);
 
   useEffect(() => {
     setLoaded(false);
-  }, [props.data.city]);
+  }, [data.city]);
 
   function search() {
     const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
-    let city = props.data.city;
+    let city = data.city;
     let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${weatherApiKey}`;
     axios.get(apiUrl).then(handleForecastResponse);
   }
@@ -30,7 +30,7 @@ export default function WeatherForecast(props) {
             if (index < 5) {
               return (
                 <div className="col" key={index}>
-                  <WeatherForecastDay data={dailyForcast} unit={props.unit} />
+                  <WeatherForecastDay data={dailyForcast} unit={unit} />
                 </div>
               );
             } else {
