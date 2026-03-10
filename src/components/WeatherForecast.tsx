@@ -1,23 +1,37 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import type { AxiosResponse } from "axios";
 import "./WeatherForecast.css";
 import WeatherForecastDay from "./WeatherForecastDay";
+import type { Unit, ForecastDay } from "../types/weather";
 
-export default function WeatherForecast({data, unit}) {
+type WeatherForecastProps = {
+  city: string;
+  unit: Unit;
+};
+
+interface ForecastApiResponse {
+  daily: ForecastDay[];
+}
+
+export default function WeatherForecast({ city, unit }: WeatherForecastProps) {
   const [loaded, setLoaded] = useState(false);
-  const [forecast, setForecast] = useState(null);
+  const [forecast, setForecast] = useState<ForecastDay[]>([]);
 
   useEffect(() => {
     setLoaded(false);
-  }, [data.city]);
+  }, [city]);
 
   function search() {
     const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
-    let city = data.city;
-    let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${weatherApiKey}`;
+    let cityName = city;
+    let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${cityName}&key=${weatherApiKey}`;
     axios.get(apiUrl).then(handleForecastResponse);
   }
-  function handleForecastResponse(response) {
+
+  function handleForecastResponse(
+    response: AxiosResponse<ForecastApiResponse>,
+  ) {
     setForecast(response.data.daily);
     setLoaded(true);
   }
@@ -26,11 +40,11 @@ export default function WeatherForecast({data, unit}) {
     return (
       <div className="WeatherForecast">
         <div className="row">
-          {forecast.map(function (dailyForcast, index) {
+          {forecast.map(function (dailyForecast, index) {
             if (index < 5) {
               return (
                 <div className="col" key={index}>
-                  <WeatherForecastDay data={dailyForcast} unit={unit} />
+                  <WeatherForecastDay data={dailyForecast} unit={unit} />
                 </div>
               );
             } else {

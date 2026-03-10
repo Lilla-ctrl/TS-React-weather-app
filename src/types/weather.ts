@@ -4,6 +4,7 @@ export interface Coordinates {
 }
 
 export interface WeatherData {
+  ready: boolean;
   temperature: number;
   wind: number;
   humidity: number;
@@ -15,9 +16,10 @@ export interface WeatherData {
 }
 
 export interface ForecastDay {
+  time: number;
   icon: string;
   description: string;
-  maxTemp: number;
+  temperature: number;
   minTemp: number;
 }
 
