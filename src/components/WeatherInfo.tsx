@@ -1,14 +1,22 @@
 import FormattedDate from "./FormattedDate";
 import WeatherTemperature from "./WeatherTemperature";
 import WeatherIcon from "./WeatherIcon";
+import type { Dispatch, SetStateAction } from "react";
+import type { Unit, WeatherData } from "../types/weather";
 
-export default function WeatherInfo({data, unit, setUnit}) {
+interface WeatherInfoProps {
+  data: WeatherData;
+  unit: Unit;
+  setUnit: Dispatch<SetStateAction<Unit>>;
+}
+
+export default function WeatherInfo({ data, unit, setUnit }: WeatherInfoProps) {
   return (
     <div>
       <h1 className="text-center text-sm-start">{data.city}</h1>
       <ul className="text-center text-sm-start">
         <li>
-          <FormattedDate timezone={data.timezone} />
+          <FormattedDate timezone={data.timezone || "UTC"} />
         </li>
         <li className="text-capitalize">{data.description}</li>
       </ul>
@@ -17,11 +25,7 @@ export default function WeatherInfo({data, unit, setUnit}) {
         <div className="col-12 col-sm-6 d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-sm-start mb-3 mb-sm-0">
           <div className="d-flex">
             <div>
-              <WeatherIcon
-                icon={data.icon}
-                description={data.description}
-                /* className="me-sm-3 mb-2 mb-sm-0" */
-              />
+              <WeatherIcon icon={data.icon} description={data.description} />
             </div>
 
             <WeatherTemperature
