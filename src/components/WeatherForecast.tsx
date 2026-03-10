@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import "./WeatherForecast.css";
+import "../style/WeatherForecast.css";
 import WeatherForecastDay from "./WeatherForecastDay";
 import type { Unit, ForecastDay } from "../types/weather";
 
