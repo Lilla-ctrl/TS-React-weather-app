@@ -17,10 +17,14 @@ export interface WeatherData {
 
 export interface ForecastDay {
   time: number;
-  icon: string;
-  description: string;
-  temperature: number;
-  minTemp: number;
+  condition: {
+    description: string;
+    icon: string;
+  };
+  temperature: {
+    maximum: number;
+    minimum: number;
+  };
 }
 
 export type Forecast = ForecastDay[];

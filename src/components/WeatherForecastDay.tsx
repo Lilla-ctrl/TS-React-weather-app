@@ -1,10 +1,18 @@
 import WeatherIcon from "./WeatherIcon";
 import convertTemperature from "../utils/convertTemperature";
+import type { Unit, ForecastDay } from "../types/weather";
 
-export default function WeatherForecastDay(props) {
+type WeatherForecastDayProps = {
+  data: ForecastDay;
+  unit: Unit;
+};
 
+export default function WeatherForecastDay({
+  data,
+  unit,
+}: WeatherForecastDayProps) {
   function formatDay() {
-    let date = new Date(props.data.time * 1000);
+    let date = new Date(data.time * 1000);
     let day = date.getDay();
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -13,18 +21,17 @@ export default function WeatherForecastDay(props) {
 
   return (
     <div className="col">
-      <div className="Forecast-day">{formatDay()}</div>{" "}
+      <div className="Forecast-day">{formatDay()}</div>
       <WeatherIcon
-        code={props.data.condition.icon}
-        alt={props.data.condition.description}
-        size={36}
-      />{" "}
+        icon={data.condition.icon}
+        description={data.condition.description}
+      />
       <div className="Forecast-temperature">
         <span className="Forecast-temperature-max">
-          {Math.round(convertTemperature(props.data.temperature.maximum, props.unit))}°
-        </span>{" "}
+          {Math.round(convertTemperature(data.temperature.maximum, unit))}°
+        </span>
         <span className="Forecast-temperature-min">
-          {Math.round(convertTemperature(props.data.temperature.minimum, props.unit))}°
+          {Math.round(convertTemperature(data.temperature.minimum, unit))}°
         </span>
       </div>
     </div>
