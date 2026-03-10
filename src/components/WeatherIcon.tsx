@@ -1,5 +1,15 @@
-export default function WeatherIcon(props) {
-  const imgsrc = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${props.code}.png`;
+import type { JSX } from "react";
 
-  return <img src={imgsrc} alt="Weather icon" />;
+type WeatherIconProps = {
+  icon: string;
+  description: string;
+};
+
+export default function WeatherIcon({
+  icon,
+  description,
+}: WeatherIconProps): JSX.Element {
+  const imgsrc = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${icon}.png`;
+
+  return <img src={imgsrc} alt={description} />;
 }
