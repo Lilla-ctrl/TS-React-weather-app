@@ -1,5 +1,5 @@
 import WeatherIcon from "./WeatherIcon";
-import convertTemperature from "./utils/convertTemperature";
+import convertTemperature from "../utils/convertTemperature";
 
 export default function WeatherForecastDay(props) {
 

@@ -1,4 +1,4 @@
-import convertTemperature from "./utils/convertTemperature";
+import convertTemperature from "../utils/convertTemperature";
 
 export default function WeatherTemperature(props) {
   function showCelsius(event) {
