@@ -12,7 +12,7 @@ export default function WeatherForecast(props) {
   }, [props.data.city]);
 
   function search() {
-    const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
+    const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
     let city = props.data.city;
     let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${weatherApiKey}`;
     axios.get(apiUrl).then(handleForecastResponse);
