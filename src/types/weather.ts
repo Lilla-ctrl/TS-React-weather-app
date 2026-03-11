@@ -1,7 +1,24 @@
 export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export interface APIResponse {
+  temperature: {
+    current: number;
+    humidity: number;
+  };
+  wind: {
+    speed: number;
+  };
+  city: string;
+  condition: {
+    description: string;
+    icon: string;
+  };
   coordinates: {
-    longitude: number;
     latitude: number;
+    longitude: number;
   };
 }
 
