@@ -2,22 +2,42 @@ import { useCallback, useState, useEffect } from "react";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 import axios from "axios";
+import type { AxiosResponse } from "axios";
+import type {
+  WeatherData,
+  Unit,
+  Coordinates,
+  APIResponse,
+} from "../types/weather";
 import "../style/Weather.css";
 
-export default function Weather(props) {
-  const [weatherData, setWeatherData] = useState({ ready: false });
-  const [city, setCity] = useState(props.defaultCity);
-  const [timezoneCache, setTimezoneCache] = useState({});
-  const [unit, setUnit] = useState("celsius");
-  const [weatherSource, setWeatherSource] = useState("location");
+type Position = {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+};
 
-  async function fetchTimezone(coordinates) {
+export default function Weather() {
+  const [weatherData, setWeatherData] = useState<
+    WeatherData | { ready: false }
+  >({ ready: false });
+  const [city, setCity] = useState<string>("");
+  const [timezoneCache, setTimezoneCache] = useState<Record<string, string>>(
+    {},
+  );
+  const [unit, setUnit] = useState<Unit>("celsius");
+  const [weatherSource, setWeatherSource] = useState<"city" | "location">(
+    "location",
+  );
+
+  async function fetchTimezone(coordinates: Coordinates) {
     const { latitude, longitude } = coordinates;
     const timezoneApiKey = import.meta.env.VITE_TIMEZONE_API_KEY;
 
     try {
       const res = await fetch(
-        `https://api.timezonedb.com/v2.1/get-time-zone?key=${timezoneApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`
+        `https://api.timezonedb.com/v2.1/get-time-zone?key=${timezoneApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`,
       );
       const data = await res.json();
       return data.zoneName || "UTC";
@@ -28,11 +48,11 @@ export default function Weather(props) {
   }
 
   const handleResponse = useCallback(
-    async function handleResponse(response) {
+    async function handleResponse(response: AxiosResponse<APIResponse>) {
       const coordinates = response.data.coordinates;
       const cityName = response.data.city;
 
-      let zoneName;
+      let zoneName: string;
 
       if (timezoneCache[cityName]) {
         zoneName = timezoneCache[cityName];
@@ -50,36 +70,38 @@ export default function Weather(props) {
         temperature: response.data.temperature.current,
         wind: response.data.wind.speed,
         humidity: response.data.temperature.humidity,
-        city: response.data.city,
+        city: cityName,
         description: response.data.condition.description,
         icon: response.data.condition.icon,
         coordinates,
         timezone: zoneName,
       });
     },
-    [timezoneCache]
+    [timezoneCache],
   );
 
   function search() {
+    if (!city) return;
     const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
     let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${weatherApiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setWeatherSource("city");
     search();
   }
 
-  function handleLocation(event) {
+  function handleLocation(event: React.MouseEvent<HTMLInputElement>) {
     event.preventDefault();
     setWeatherSource("location");
     navigator.geolocation.getCurrentPosition(searchLocation);
   }
 
   const searchLocation = useCallback(
-    (position) => {
+    (position: Position) => {
+      console.log(position);
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
       const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
@@ -94,7 +116,7 @@ export default function Weather(props) {
           console.error("API error:", error);
         });
     },
-    [handleResponse]
+    [handleResponse],
   );
 
   useEffect(() => {
@@ -103,7 +125,7 @@ export default function Weather(props) {
     }
   }, [searchLocation, weatherSource]);
 
-  function handleCityChange(event) {
+  function handleCityChange(event: React.ChangeEvent<HTMLInputElement>) {
     setCity(event.target.value);
   }
 
@@ -118,7 +140,7 @@ export default function Weather(props) {
                 type="search"
                 placeholder="Enter a city!"
                 className="form-control"
-                autoFocus="on"
+                autoFocus
                 onChange={handleCityChange}
               />
             </div>
