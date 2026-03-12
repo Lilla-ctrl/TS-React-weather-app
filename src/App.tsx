@@ -3,8 +3,8 @@ import Weather from "./components/Weather";
 
 export default function App() {
   return (
-    <div className="App">
-      <div className="container">
+    <div className="bg-secondary">
+      <div className="max-w-150 mx-auto bg-primary">
         <Weather />
         <footer>
           Coded by Lilla,{" "}
