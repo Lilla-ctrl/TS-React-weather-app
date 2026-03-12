@@ -18,28 +18,41 @@ export default function WeatherTemperature({
   }
 
   return (
-    <div className="WeatherTemperature">
-      <span className="temperature">
+    <div className="flex items-start gap-1">
+      {/* Temperature number */}
+      <span className="text-6xl font-light text-primary-text">
         {celsius !== undefined
           ? Math.round(convertTemperature(celsius, unit))
           : "-"}
       </span>
-      <span className="unit">
+
+      {/* Unit selector */}
+      <div className="flex items-center text-lg mt-2 text-primary-text-dim">
         <button
           type="button"
-          className={unit === "celsius" ? "" : "clickable"}
+          className={
+            unit === "celsius"
+              ? "text-primary-text cursor-default"
+              : "text-secondary-text hover:text-white hover:cursor-pointer transition-colors"
+          }
           onClick={() => handleUnitChange("celsius")}
         >
           °C
         </button>
-        |
+
+        <span className="mx-1 opacity-30">|</span>
+
         <button
-          className={unit === "fahrenheit" ? "" : "clickable"}
+          className={
+            unit === "fahrenheit"
+              ? "text-primary-text cursor-default"
+              : "text-secondary-text hover:text-white hover:cursor-pointer transition-colors"
+          }
           onClick={() => handleUnitChange("fahrenheit")}
         >
           °F
         </button>
-      </span>
+      </div>
     </div>
   );
 }
