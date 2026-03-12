@@ -20,17 +20,20 @@ export default function WeatherForecastDay({
   }
 
   return (
-    <div className="col">
-      <div className="Forecast-day">{formatDay()}</div>
+    <div className="flex flex-col items-center text-center">
+      <div className="text-sm font-bold text-primary">
+        {formatDay()}
+      </div>
       <WeatherIcon
         icon={data.condition.icon}
         description={data.condition.description}
+        size="w-20 h-20"
       />
-      <div className="Forecast-temperature">
-        <span className="Forecast-temperature-max">
+      <div className="flex gap-0.5 text-sm">
+        <span className="text-primary font-bold">
           {Math.round(convertTemperature(data.temperature.maximum, unit))}°
         </span>
-        <span className="Forecast-temperature-min">
+        <span className="text-primary">
           {Math.round(convertTemperature(data.temperature.minimum, unit))}°
         </span>
       </div>
