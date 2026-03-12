@@ -48,4 +48,8 @@ export interface ForecastDay {
 
 export type Forecast = ForecastDay[];
 
+export interface ForecastApiResponse {
+  daily: Forecast;
+}
+
 export type Unit = "celsius" | "fahrenheit";
