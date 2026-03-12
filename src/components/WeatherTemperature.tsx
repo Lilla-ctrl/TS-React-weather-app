@@ -33,7 +33,7 @@ export default function WeatherTemperature({
           className={
             unit === "celsius"
               ? "text-primary-text cursor-default"
-              : "text-secondary-text hover:text-white hover:cursor-pointer transition-colors"
+              : "text-primary-text/50 hover:text-white hover:cursor-pointer transition-colors"
           }
           onClick={() => handleUnitChange("celsius")}
         >
@@ -46,7 +46,7 @@ export default function WeatherTemperature({
           className={
             unit === "fahrenheit"
               ? "text-primary-text cursor-default"
-              : "text-secondary-text hover:text-white hover:cursor-pointer transition-colors"
+              : "text-primary-text/50 hover:text-white hover:cursor-pointer transition-colors"
           }
           onClick={() => handleUnitChange("fahrenheit")}
         >
