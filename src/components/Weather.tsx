@@ -3,7 +3,6 @@ import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 import type { AxiosResponse } from "axios";
 import type { WeatherData, Unit, APIResponse } from "../types/weather";
-import "../style/Weather.css";
 import {
   fetchWeatherByCity,
   fetchTimezone,

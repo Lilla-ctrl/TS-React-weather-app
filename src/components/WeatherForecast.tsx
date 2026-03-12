@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "../style/WeatherForecast.css";
 import WeatherForecastDay from "./WeatherForecastDay";
 import type { Unit, ForecastDay } from "../types/weather";
 import { fetchForecast } from "../utils/weatherUtils";
