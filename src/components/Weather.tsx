@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 import WeatherSearch from "./WeatherSearch";
+import WeatherConditions from "./WeatherConditions";
 import type { AxiosResponse } from "axios";
 import type { WeatherData, Unit, APIResponse } from "../types/weather";
 import {
@@ -123,6 +124,7 @@ export default function Weather() {
         />
         <WeatherInfo data={weatherData} unit={unit} setUnit={setUnit} />
         <WeatherForecast city={weatherData.city} unit={unit} />
+        <WeatherConditions data={weatherData} />
       </div>
     );
   } else {
