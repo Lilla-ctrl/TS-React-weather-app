@@ -3,8 +3,8 @@ import Weather from "./components/Weather";
 
 export default function App() {
   return (
-    <div className="bg-secondary">
-      <div className="max-w-150 mx-auto bg-primary">
+    <div className="bg-secondary py-5">
+      <div className="max-w-150 mx-auto bg-primary rounded-lg">
         <Weather />
         <footer>
           Coded by Lilla,{" "}
