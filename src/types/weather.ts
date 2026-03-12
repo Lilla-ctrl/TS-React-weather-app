@@ -16,23 +16,22 @@ export interface APIResponse {
     description: string;
     icon: string;
   };
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
+  coordinates: Coordinates;
 }
 
-export interface WeatherData {
-  ready: boolean;
-  temperature: number;
-  wind: number;
-  humidity: number;
-  city: string;
-  description: string;
-  icon: string;
-  coordinates: Coordinates;
-  timezone?: string;
-}
+export type WeatherData =
+  | { ready: false }
+  | {
+      ready: true;
+      temperature: number;
+      wind: number;
+      humidity: number;
+      city: string;
+      description: string;
+      icon: string;
+      coordinates: Coordinates;
+      timezone: string;
+    };
 
 export interface ForecastDay {
   time: number;

@@ -4,11 +4,11 @@ import WeatherIcon from "./WeatherIcon";
 import type { Dispatch, SetStateAction } from "react";
 import type { Unit, WeatherData } from "../types/weather";
 
-interface WeatherInfoProps {
-  data: WeatherData;
+type WeatherInfoProps = {
+  data: Extract<WeatherData, { ready: true }>;
   unit: Unit;
   setUnit: Dispatch<SetStateAction<Unit>>;
-}
+};
 
 export default function WeatherInfo({ data, unit, setUnit }: WeatherInfoProps) {
   return (
