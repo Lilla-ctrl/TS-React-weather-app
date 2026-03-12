@@ -80,7 +80,7 @@ export default function Weather() {
     search();
   }
 
-  function handleLocation(event: React.MouseEvent<HTMLInputElement>) {
+  function handleLocation(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     setWeatherSource("location");
     navigator.geolocation.getCurrentPosition(searchLocation);
