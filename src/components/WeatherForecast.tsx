@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import type { AxiosResponse } from "axios";
 import "../style/WeatherForecast.css";
 import WeatherForecastDay from "./WeatherForecastDay";
 import type { Unit, ForecastDay } from "../types/weather";
+import { fetchForecast } from "../utils/weatherUtils";
 
 type WeatherForecastProps = {
   city: string;
   unit: Unit;
 };
-
-interface ForecastApiResponse {
-  daily: ForecastDay[];
-}
 
 export default function WeatherForecast({ city, unit }: WeatherForecastProps) {
   const [loaded, setLoaded] = useState(false);
@@ -22,40 +17,28 @@ export default function WeatherForecast({ city, unit }: WeatherForecastProps) {
     setLoaded(false);
   }, [city]);
 
-  function search() {
-    const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
-    let cityName = city;
-    let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${cityName}&key=${weatherApiKey}`;
-    axios.get(apiUrl).then(handleForecastResponse);
-  }
+  useEffect(() => {
+    if (!loaded) {
+      fetchForecast(city)
+        .then((dailyData) => {
+          setForecast(dailyData);
+          setLoaded(true);
+        })
+        .catch((err) => console.error("Forecast error", err));
+    }
+  }, [loaded, city]);
 
-  function handleForecastResponse(
-    response: AxiosResponse<ForecastApiResponse>,
-  ) {
-    setForecast(response.data.daily);
-    setLoaded(true);
-  }
+  if (!loaded) return null;
 
-  if (loaded) {
-    return (
-      <div className="WeatherForecast">
-        <div className="row">
-          {forecast.map(function (dailyForecast, index) {
-            if (index < 5) {
-              return (
-                <div className="col" key={index}>
-                  <WeatherForecastDay data={dailyForecast} unit={unit} />
-                </div>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </div>
+  return (
+    <div className="WeatherForecast">
+      <div className="row">
+        {forecast.slice(0, 5).map((dailyForecast, index) => (
+          <div className="col" key={index}>
+            <WeatherForecastDay data={dailyForecast} unit={unit} />
+          </div>
+        ))}
       </div>
-    );
-  } else {
-    search();
-    return null;
-  }
+    </div>
+  );
 }
