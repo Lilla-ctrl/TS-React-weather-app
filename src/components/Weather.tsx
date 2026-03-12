@@ -3,13 +3,9 @@ import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import type {
-  WeatherData,
-  Unit,
-  Coordinates,
-  APIResponse,
-} from "../types/weather";
+import type { WeatherData, Unit, APIResponse } from "../types/weather";
 import "../style/Weather.css";
+import { fetchWeatherByCity, fetchTimezone } from "../utils/weatherUtils";
 
 type Position = {
   coords: {
@@ -30,22 +26,6 @@ export default function Weather() {
   const [weatherSource, setWeatherSource] = useState<"city" | "location">(
     "location",
   );
-
-  async function fetchTimezone(coordinates: Coordinates) {
-    const { latitude, longitude } = coordinates;
-    const timezoneApiKey = import.meta.env.VITE_TIMEZONE_API_KEY;
-
-    try {
-      const res = await fetch(
-        `https://api.timezonedb.com/v2.1/get-time-zone?key=${timezoneApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`,
-      );
-      const data = await res.json();
-      return data.zoneName || "UTC";
-    } catch (err) {
-      console.error("Timezone fetch error:", err);
-      return "UTC";
-    }
-  }
 
   const handleResponse = useCallback(
     async function handleResponse(response: AxiosResponse<APIResponse>) {
@@ -80,11 +60,15 @@ export default function Weather() {
     [timezoneCache],
   );
 
-  function search() {
+  async function search() {
     if (!city) return;
-    const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
-    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${weatherApiKey}&units=metric`;
-    axios.get(apiUrl).then(handleResponse);
+
+    try {
+      const data = await fetchWeatherByCity(city);
+      handleResponse({ data } as AxiosResponse<APIResponse>);
+    } catch (err) {
+      console.error("Search failed", err);
+    }
   }
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
