@@ -1,11 +1,14 @@
 import { useCallback, useState, useEffect } from "react";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
-import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { WeatherData, Unit, APIResponse } from "../types/weather";
 import "../style/Weather.css";
-import { fetchWeatherByCity, fetchTimezone } from "../utils/weatherUtils";
+import {
+  fetchWeatherByCity,
+  fetchTimezone,
+  fetchWeatherByCoordinates,
+} from "../utils/weatherUtils";
 
 type Position = {
   coords: {
@@ -84,21 +87,18 @@ export default function Weather() {
   }
 
   const searchLocation = useCallback(
-    (position: Position) => {
-      console.log(position);
+    async (position: Position) => {
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
-      const weatherApiKey = import.meta.env.VITE_WEATHER_API_KEY;
-      let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${weatherApiKey}&units=metric`;
 
-      axios
-        .get(apiUrl)
-        .then(handleResponse)
-        .catch((error) => {
-          setWeatherData({ ready: false });
-          alert("Too many attempts - please try again in a moment.");
-          console.error("API error:", error);
-        });
+      try {
+        const data = await fetchWeatherByCoordinates(lat, lon);
+        handleResponse({ data } as AxiosResponse<APIResponse>);
+      } catch (err) {
+        setWeatherData({ ready: false });
+        alert("Too many attempts - please try again in a moment.");
+        console.error("API error:", err);
+      }
     },
     [handleResponse],
   );

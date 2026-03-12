@@ -24,3 +24,11 @@ export async function fetchTimezone(coordinates: Coordinates):Promise<string> {
     const response = await axios.get<APIResponse>(url);
     return response.data;
   }
+
+  export async function fetchWeatherByCoordinates(lat: number, lon: number): Promise<APIResponse> {
+    const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+    const url = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=metric`;
+  
+    const response = await axios.get<APIResponse>(url);
+    return response.data;
+  }
