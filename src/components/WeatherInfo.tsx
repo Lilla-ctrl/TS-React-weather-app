@@ -12,35 +12,24 @@ type WeatherInfoProps = {
 
 export default function WeatherInfo({ data, unit, setUnit }: WeatherInfoProps) {
   return (
-    <div>
-      <h1 className="text-center text-sm-start">{data.city}</h1>
-      <ul className="text-center text-sm-start">
-        <li>
+    <div className="grid grid-flow-col grid-rows-2 gap-4 py-4 px-10 justify-evenly items-center">
+      <div className="col-span-2">
+        <div>
+          <h1 className="text-4xl">{data.city}</h1>
+        </div>
+        <div className="text-md">
           <FormattedDate timezone={data.timezone || "UTC"} />
-        </li>
-        <li className="text-capitalize">{data.description}</li>
-      </ul>
-
-      <div className="row mt-3">
-        <div className="col-12 col-sm-6 d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-sm-start mb-3 mb-sm-0">
-          <div className="d-flex">
-            <div>
-              <WeatherIcon icon={data.icon} description={data.description} />
-            </div>
-
-            <WeatherTemperature
-              celsius={data.temperature}
-              unit={unit}
-              setUnit={setUnit}
-            />
-          </div>
         </div>
-        <div className="col-12 col-sm-6 text-center text-sm-start">
-          <ul>
-            <li>Humidity: {data.humidity}%</li>
-            <li>Wind: {Math.round(data.wind)} m/s</li>
-          </ul>
-        </div>
+      </div>
+      <div className="col-span-2">
+        <WeatherTemperature
+          celsius={data.temperature}
+          unit={unit}
+          setUnit={setUnit}
+        />
+      </div>
+      <div className="row-span-2">
+        <WeatherIcon icon={data.icon} description={data.description} />
       </div>
     </div>
   );
