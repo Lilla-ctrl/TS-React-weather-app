@@ -125,7 +125,7 @@ export default function Weather() {
         />
         <WeatherInfo data={weatherData} unit={unit} setUnit={setUnit} />
         <WeatherForecast city={weatherData.city} unit={unit} />
-        <WeatherConditions data={weatherData} />
+        <WeatherConditions data={weatherData} unit={unit} />
       </div>
     );
   } else {
