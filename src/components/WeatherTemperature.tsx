@@ -20,7 +20,7 @@ export default function WeatherTemperature({
   return (
     <div className="flex items-start gap-1">
       {/* Temperature number */}
-      <span className="text-6xl font-light text-primary-text">
+      <span className="text-6xl font-light text-primary-text/80">
         {celsius !== undefined
           ? Math.round(convertTemperature(celsius, unit))
           : "-"}
