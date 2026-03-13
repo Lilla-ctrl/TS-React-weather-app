@@ -13,7 +13,7 @@ export default function WeatherConditions({ data }: WeatherConditionsProps) {
       <div className="grid grid-cols-2 gap-2 px-4 items-center">
         <div>
           <div className="text-md text-primary">Real feel</div>
-          <div className="text-2xl font-bold text-primary">10°</div>
+          <div className="text-2xl font-bold text-primary">{Math.round(data.realFeel)}°C</div>
         </div>
         
 

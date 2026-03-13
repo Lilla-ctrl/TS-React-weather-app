@@ -7,6 +7,7 @@ export interface APIResponse {
   temperature: {
     current: number;
     humidity: number;
+    feels_like: number;
   };
   wind: {
     speed: number;
@@ -31,6 +32,7 @@ export type WeatherData =
       icon: string;
       coordinates: Coordinates;
       timezone: string;
+      realFeel: number;
     };
 
 export interface ForecastDay {

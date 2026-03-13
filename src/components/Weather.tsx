@@ -58,6 +58,7 @@ export default function Weather() {
         description: response.data.condition.description,
         icon: response.data.condition.icon,
         coordinates,
+        realFeel: response.data.temperature.feels_like,
         timezone: zoneName,
       });
     },
