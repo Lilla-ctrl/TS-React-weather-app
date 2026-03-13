@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef, cache } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import Loading from "./Loading";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
