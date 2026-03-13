@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+SkyCast Weather 🌤️
+A modern, responsive weather dashboard built with React and Tailwind CSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project Intent
+The primary objective of this project was to migrate an existing JavaScript codebase to TypeScript, implementing strict type-checking to improve maintainability and developer experience. Following the migration, the application underwent a significant refactor to transition from a decentralized "component-heavy" fetching logic to a "lifted state" architecture, alongside a complete UI/UX revamp using CSS Grid.
 
-Currently, two official plugins are available:
+🛠 Technical Specifications
+Core Tech Stack
+Framework: React (Vite)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Language: TypeScript
 
-## React Compiler
+Styling: Tailwind CSS (Utility-first CSS)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+API: SheCodes Weather API
 
-## Expanding the ESLint configuration
+Notifications: react-hot-toast
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Key Technical Features
+TypeScript Migration: Full implementation of Interfaces for API responses and component props, eliminating "any" types and ensuring data integrity across the flow.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+State Management: Lifted weather and forecast state to the parent Weather component to ensure a "single source of truth" and prevent redundant API calls.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Responsive Sidebar Layout: Utilized CSS Grid Template Areas to create a dynamic layout that shifts from a vertical stack on mobile to a multi-column sidebar layout on medium screens.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Modern Viewport Handling: Implemented min-h-[100dvh] to ensure full-screen background coverage across mobile browsers with dynamic address bars.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Graceful Error Handling: Dual-tier error system using react-hot-toast for transient search errors and a conditional "Empty State" UI for critical load failures.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+📐 Architecture & Refactoring details
+Data Flow
+Previously, components fetched their own data based on a passed string. The refactored version uses a centralized search function:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Parent (Weather.tsx) fetches both Current Weather and 5-Day Forecast simultaneously using Promise.all.
+
+Data is validated and passed down as typed objects via props.
+
+Child Components (WeatherInfo, WeatherForecast) act as "Presentational Components," focusing purely on rendering.
+
+CSS Grid Mapping
+The application uses a custom grid configuration for medium screens:
+
+Mobile: 1fr (Single column)
+
+Tablet/Desktop: [1fr_18rem] (Main content + Sidebar)
+
+Responsive Units: Used rem and em exclusively for spacing and typography to ensure accessibility and scaling.
+
+🚀 Getting Started 
+1. Clone the repo:
+git clone https://github.com/your-username/skycast-weather.git
+
+2. Install dependencies:
+npm install
+
+3. Environment Variables:
+Create a .env file and add your API Key: VITE_WEATHER_API_KEY=your_key_here
+
+4. Run Dev Server:
+npm run dev
