@@ -1,4 +1,5 @@
 import { useCallback, useState, useEffect } from "react";
+import Loading from "./Loading";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
 import WeatherSearch from "./WeatherSearch";
@@ -19,6 +20,7 @@ type Position = {
 };
 
 export default function Weather() {
+  const [loading, setLoading] = useState(true);
   const [weatherData, setWeatherData] = useState<
     WeatherData | { ready: false }
   >({ ready: false });
@@ -61,6 +63,7 @@ export default function Weather() {
         realFeel: response.data.temperature.feels_like,
         timezone: zoneName,
       });
+      setLoading(false);
     },
     [timezoneCache],
   );
@@ -69,10 +72,12 @@ export default function Weather() {
     if (!city) return;
 
     try {
+      setLoading(true);
       const data = await fetchWeatherByCity(city);
       handleResponse({ data } as AxiosResponse<APIResponse>);
     } catch (err) {
       console.error("Search failed", err);
+      setLoading(false);
     }
   }
 
@@ -90,6 +95,7 @@ export default function Weather() {
 
   const searchLocation = useCallback(
     async (position: Position) => {
+      setLoading(true);
       let lat = position.coords.latitude;
       let lon = position.coords.longitude;
 
@@ -115,9 +121,22 @@ export default function Weather() {
     setCity(event.target.value);
   }
 
+  if (loading) {
+    return (
+      <div>
+        <WeatherSearch
+          handleSubmit={handleSubmit}
+          handleLocation={handleLocation}
+          handleCityChange={handleCityChange}
+        />
+        <Loading />
+      </div>  
+    );
+  }
+
   if (weatherData.ready) {
     return (
-      <div className="Weather">
+      <div>
         <WeatherSearch
           handleSubmit={handleSubmit}
           handleLocation={handleLocation}
@@ -128,7 +147,7 @@ export default function Weather() {
         <WeatherConditions data={weatherData} unit={unit} />
       </div>
     );
-  } else {
-    return "One moment, getting your forecast 🌤️";
   }
+
+  return null;
 }
