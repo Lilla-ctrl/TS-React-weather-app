@@ -31,7 +31,7 @@ export default function WeatherForecast({ city, unit }: WeatherForecastProps) {
 
   return (
       <div className="bg-secondary mx-2 p-2 rounded-xl grid grid-cols-5 gap-2">
-        {forecast.slice(0, 5).map((dailyForecast, index) => (
+        {forecast.slice(1, 6).map((dailyForecast, index) => (
           <div key={index}>
             <WeatherForecastDay data={dailyForecast} unit={unit} />
           </div>
