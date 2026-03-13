@@ -94,9 +94,9 @@ export default function Weather() {
 
       setForecast(forecastData);
       handleResponse({ data: weatherData } as AxiosResponse<APIResponse>);
+      setLoading(false);
     } catch (err: any) {
       setLoading(false);
-
       if (err.response?.status === 404 || err.message === "City not found") {
         toast.error("We couldn't find that city. Please try again!");
       } else {
@@ -149,44 +149,33 @@ export default function Weather() {
     setCity(event.target.value);
   }
 
-  if (loading) {
-    return (
-      <div>
-        <WeatherSearch
-          handleSubmit={handleSubmit}
-          handleLocation={handleLocation}
-          handleCityChange={handleCityChange}
-        />
+  return (
+    <div>
+      <WeatherSearch
+        handleSubmit={handleSubmit}
+        handleLocation={handleLocation}
+        handleCityChange={handleCityChange}
+      />
+
+      {loading ? (
         <Loading />
-      </div>
-    );
-  }
-
-  if (errorMessage && !weatherData.ready && !loading) {
-    return (
-      <div className="text-center p-8">
-        <p className="text-red-500 mb-4">{errorMessage}</p>
-        <button onClick={() => window.location.reload()} className="underline">
-          Try again
-        </button>
-      </div>
-    );
-  }
-
-  if (weatherData.ready) {
-    return (
-      <div>
-        <WeatherSearch
-          handleSubmit={handleSubmit}
-          handleLocation={handleLocation}
-          handleCityChange={handleCityChange}
-        />
-        <WeatherInfo data={weatherData} unit={unit} setUnit={setUnit} />
-        <WeatherForecast data={forecast} unit={unit} />
-        <WeatherConditions data={weatherData} unit={unit} />
-      </div>
-    );
-  }
-
-  return null;
+      ) : weatherData.ready ? (
+        <>
+          <WeatherInfo data={weatherData} unit={unit} setUnit={setUnit} />
+          <WeatherForecast data={forecast} unit={unit} />
+          <WeatherConditions data={weatherData} unit={unit} />
+        </>
+      ) : errorMessage ? (
+        <div className="text-center p-8">
+          <p className="text-red-500 mb-4">{errorMessage}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="underline"
+          >
+            Try again
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
 }
