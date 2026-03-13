@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useRef, cache } from "react";
 import Loading from "./Loading";
 import WeatherInfo from "./WeatherInfo";
 import WeatherForecast from "./WeatherForecast";
@@ -42,6 +42,11 @@ export default function Weather() {
     "location",
   );
 
+  const cacheRef = useRef(timezoneCache);
+  useEffect(() => {
+    cacheRef.current = timezoneCache;
+  }, [timezoneCache])
+
   const handleResponse = useCallback(
     async function handleResponse(response: AxiosResponse<APIResponse>) {
       const coordinates = response.data.coordinates;
@@ -49,7 +54,7 @@ export default function Weather() {
 
       let zoneName: string;
 
-      if (timezoneCache[cityName]) {
+      if (cacheRef.current[cityName]) {
         zoneName = timezoneCache[cityName];
       } else {
         zoneName = await fetchTimezone(coordinates);
@@ -74,7 +79,7 @@ export default function Weather() {
       });
       setLoading(false);
     },
-    [timezoneCache],
+    [],
   );
 
   async function search() {
