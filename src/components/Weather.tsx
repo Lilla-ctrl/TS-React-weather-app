@@ -5,13 +5,19 @@ import WeatherForecast from "./WeatherForecast";
 import WeatherSearch from "./WeatherSearch";
 import WeatherConditions from "./WeatherConditions";
 import type { AxiosResponse } from "axios";
-import type { WeatherData, Unit, APIResponse, ForecastDay } from "../types/weather";
+import type {
+  WeatherData,
+  Unit,
+  APIResponse,
+  ForecastDay,
+} from "../types/weather";
 import {
   fetchWeatherByCity,
   fetchTimezone,
   fetchWeatherByCoordinates,
   fetchForecast,
 } from "../utils/weatherUtils";
+import toast from "react-hot-toast";
 
 type Position = {
   coords: {
@@ -26,6 +32,7 @@ export default function Weather() {
     WeatherData | { ready: false }
   >({ ready: false });
   const [forecast, setForecast] = useState<ForecastDay[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [city, setCity] = useState<string>("");
   const [timezoneCache, setTimezoneCache] = useState<Record<string, string>>(
     {},
@@ -75,17 +82,26 @@ export default function Weather() {
 
     try {
       setLoading(true);
+      setErrorMessage(null);
       const [weatherData, forecastData] = await Promise.all([
         fetchWeatherByCity(city),
-        fetchForecast(city)
+        fetchForecast(city),
       ]);
+
+      if (!weatherData || !weatherData.coordinates) {
+        throw new Error("City not found");
+      }
 
       setForecast(forecastData);
       handleResponse({ data: weatherData } as AxiosResponse<APIResponse>);
-      
-    } catch (err) {
-      console.error("Search failed", err);
+    } catch (err: any) {
       setLoading(false);
+
+      if (err.response?.status === 404 || err.message === "City not found") {
+        toast.error("We couldn't find that city. Please try again!");
+      } else {
+        toast.error("Something went wrong with the weather service.");
+      }
     }
   }
 
@@ -142,7 +158,18 @@ export default function Weather() {
           handleCityChange={handleCityChange}
         />
         <Loading />
-      </div>  
+      </div>
+    );
+  }
+
+  if (errorMessage && !weatherData.ready && !loading) {
+    return (
+      <div className="text-center p-8">
+        <p className="text-red-500 mb-4">{errorMessage}</p>
+        <button onClick={() => window.location.reload()} className="underline">
+          Try again
+        </button>
+      </div>
     );
   }
 
