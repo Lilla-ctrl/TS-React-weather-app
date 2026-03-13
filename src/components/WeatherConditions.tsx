@@ -12,32 +12,37 @@ export default function WeatherConditions({
 }: WeatherConditionsProps) {
   return (
     <div className="bg-secondary m-2 p-2 rounded-xl">
-      <h2 className="text-2xl mb-2 px-2 text-primary font-medium leading-tight">
+      <h2 className="text-md mb-4 mt-2 px-2 uppercase text-primary/80 font-bold tracking-widest">
         Conditions
       </h2>
-      <div className="grid grid-cols-2 gap-2 px-4 items-center">
-        <div>
+      <div className="grid grid-cols-2 gap-4 px-4">
+
+        {/* Real feel */}
+        <div className="flex flex-col border-l border-white/10 pl-2">
           <div className="text-md text-primary">Real feel</div>
           <div className="text-2xl font-bold text-primary">
             {Math.round(convertTemperature(data.realFeel, unit))}°
           </div>
         </div>
 
-        <div className="mb-2">
+        {/* Wind */}
+        <div className="flex flex-col border-l border-white/10 pl-2">
           <div className="text-md text-primary">Wind</div>
           <div className="text-2xl font-bold text-primary">
             {Math.round(data.wind)} m/s
           </div>
         </div>
 
-        <div className="mb-2">
+        {/* Description */}
+        <div className="flex flex-col border-l border-white/10 pl-2 mb-2">
           <div className="text-md text-primary">Description</div>
           <div className="text-2xl font-bold text-primary">
             {data.description}
           </div>
         </div>
 
-        <div className="mb-2">
+        {/* Humidity */}
+        <div className="flex flex-col border-l border-white/10 pl-2">
           <div className="text-md text-primary">Humidity</div>
           <div className="text-2xl font-bold text-primary">
             {data.humidity}%
