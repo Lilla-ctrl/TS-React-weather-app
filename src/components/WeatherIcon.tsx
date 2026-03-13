@@ -26,6 +26,8 @@ export default function WeatherIcon({
     "snow-night": "snow.svg",
     "wind-day": "wind.svg",
     "wind-night": "wind.svg",
+    "mist-day": "drizzle.svg",
+    "mist-night": "drizzle.svg"
   };
 
   const fileName = iconMapping[icon] || "not-avaliable.svg"
