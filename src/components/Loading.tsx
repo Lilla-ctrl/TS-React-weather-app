@@ -18,7 +18,7 @@ export default function Loading() {
       </div>
 
       {/* Conditions skeleton */}
-      <div className="bg-secondary p-2 mx-2 rounded-xl grid grid-cols-2 gap-4">
+      <div className="bg-secondary min-h-22 py-3 px-2 mx-2 rounded-xl grid grid-cols-2 gap-4">
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
