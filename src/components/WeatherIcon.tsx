@@ -38,7 +38,7 @@ export default function WeatherIcon({
     <img
       src={src}
       alt={description}
-      className={`${size} object-contain drop-shadow-md`}
+      className={`${size} object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]`}
     />
   );
 }
