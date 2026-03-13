@@ -40,7 +40,7 @@ export default function WeatherTemperature({
           °C
         </button>
 
-        <span className="mx-1 opacity-30">|</span>
+        <span className="mx-1 text-primary-text/50 opacity-30">|</span>
 
         <button
           className={
