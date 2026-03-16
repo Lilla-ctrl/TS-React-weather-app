@@ -127,10 +127,11 @@ export default function Weather() {
       try {
         setLoading(true);
         const weatherData = await fetchWeatherByCoordinates(lat, lon);
-        const forecastData = await fetchForecast(weatherData.city);
-        setForecast(forecastData);
 
-        handleResponse({ data: weatherData } as AxiosResponse<APIResponse>);
+        await Promise.all([
+          fetchForecast(weatherData.city).then(data => setForecast(data)),
+          handleResponse({ data: weatherData } as AxiosResponse<APIResponse>)
+        ]);        
       } catch (err) {
         setWeatherData({ ready: false });
         setLoading(false);
