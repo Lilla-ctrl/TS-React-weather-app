@@ -86,7 +86,6 @@ export default function Weather() {
     if (!city) return;
 
     try {
-      setLoading(true);
       setErrorMessage(null);
       const [weatherData, forecastData] = await Promise.all([
         fetchWeatherByCity(city),
@@ -98,10 +97,8 @@ export default function Weather() {
       }
 
       setForecast(forecastData);
-      handleResponse({ data: weatherData } as AxiosResponse<APIResponse>);
-      setLoading(false);
+      await handleResponse({ data: weatherData } as AxiosResponse<APIResponse>);
     } catch (err: any) {
-      setLoading(false);
       if (err.response?.status === 404 || err.message === "City not found") {
         toast.error("We couldn't find that city. Please try again!");
       } else {
